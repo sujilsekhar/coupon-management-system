@@ -1,0 +1,12 @@
+<ul id="menu">
+    <li>@Html.ActionLink(Mui.Home, "Index", "Home")</li>           
+    <li>@Html.ActionLink(Mui.Coupon, "Index", "Coupon")</li>
+    <li>@Html.ActionLink(Mui.Vendor, "Index", "Vendor")</li>
+    @if (User.IsInRole("admin"))
+    {
+    <li>@Html.ActionLink(Mui.Users, "Index", "User")</li>
+    }
+    <li>@Html.ActionLink(Mui.Stuff, "Index", "Stuff")</li>
+    <li>@Html.PopupActionLink("about", Mui.About, controller: "Home")</li>
+</ul>
+@Html.MakePopup("about", controller: "Home", title: Mui.About + " " + Mui.SystemName, fullScreen: true, modal:true, resizable:false)

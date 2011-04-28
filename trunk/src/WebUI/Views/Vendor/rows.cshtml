@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Vendor>
+
+@foreach (var o in Model)
+{
+    <li id='o@(o.Id)' class="meal">
+        <div>@o.Name
+            <div class="fr">
+            @Html.Partial("deletebtn",o)            
+            </div>
+        </div>
+        <div>
+            <div class="fl"><img  src='@Url.Content("~/pictures/Vendors/" + (o.HasPic ? o.Id : 0) + ".jpg")' class="thumb"  alt='picture' /></div>
+            @*<div class="fl">@Html.ActionLinkWithImage(@Url.Content("~/pictures/Vendors/" + (o.HasPic ? o.Id : 0) + ".jpg"), "Open", parameters: new object[] {o.Id}, imgHtmlAttributes: new {@class = "thumb", @alt="picture", @title=@Mui.Open})</div>*@
+            <div class="comments">@o.Comments</div>
+            <br class="cbt"/>
+        </div>        
+        <div class="cbt">
+            @Html.ActionLink(@Mui.Picture, "Picture", new { o.Id })
+            <div class="fr">@Html.PopupFormActionLink("Edit", @Mui.Edit, parameters: new object[] { o.Id })</div>
+        </div>        
+    </li>
+}
