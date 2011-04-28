@@ -1,0 +1,15 @@
+﻿<fieldset>
+    <legend>@Mui.Search</legend>
+    <div class="si">
+        <div>@Mui.Name:</div>
+        @Html.Autocomplete("search", controller: "CouponAutocomplete", data: new Dictionary<string, string> { { "searchChefId", "chef" }, { "searchMeals", "meals" } }, generatePropId:false)
+    </div>
+    <div class="si">
+        <div>@Mui.Recommended:</div>
+        @Html.CheckBox("Recommended")
+    </div>
+    <div class="si">
+        <div>@Mui.Vendor:</div>
+        <span class="cbt" />@Html.Lookup("Vendors", prefix: "search", multiselect: true, fullscreen: true, clearButton: true, paging: true)</div>
+    <br class="cbt" />
+</fieldset>

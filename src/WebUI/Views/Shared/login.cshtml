@@ -1,0 +1,7 @@
+﻿@if(Request.IsAuthenticated) {
+    <text>@Mui.Welcome <b>@Context.User.Identity.Name</b>!
+    [ @Html.ActionLink(Mui.Logout, "SignOff", "Account") ]</text>
+}
+else {
+    @:[ @Html.ActionLink(Mui.Login, "Signin", "Account") ]
+}

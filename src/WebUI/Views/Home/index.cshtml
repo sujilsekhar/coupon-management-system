@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Category>
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+
+    var page = 1;
+    function addEnd(d) { $(d).css('opacity', 0).appendTo("#list").animate({ opacity: 1 }, 300, 'easeInCubic'); }
+
+    $(function () {
+        $("#tabs").tabs({
+            ajaxOptions: {
+                error: function (xhr, status, index, anchor) {
+                    $(anchor.hash).html(
+						"Couldn't load this tab. We'll try to fix this as soon as possible. " +
+						"If this wouldn't be a demo.");
+                }
+            },
+            select: function (event, ui) {
+            var url = "@Url.Content("~/Home/ShowTabContent/")" + ui.panel.id;
+
+            var ajaxLoading = "<img id='ajax-loader' src='@Url.Content("~/Content/ajax-loader.gif")' align='left' height='28' width='28'>";
+            $(ui.panel).find("#list").html(ajaxLoading + " Loading...");
+
+            $(ui.panel).find('#more').live("click", {element: ui.panel.id}, more);
+            $.get(url, null, function(d) {
+                $(ui.panel).find("#list").html(d.rows);
+                page = 1;
+                if (d.more) $(ui.panel).find('#more').show(); else $(ui.panel).find('#more').hide();
+            });
+
+            },
+
+        });
+
+            var url = "@Url.Content("~/Home/ShowTabContent/")";
+            var ajaxLoading = "<img id='ajax-loader' src='@Url.Content("~/Content/ajax-loader.gif")' align='left' height='28' width='28'>";
+            $("#1").find("#list").html(ajaxLoading + " Loading...");
+            $("#1").find('#more').live("click", {element: 1}, more);
+            $.get(url, null, function(d) {
+                $("#1").find("#list").html(d.rows);
+                page = 1;
+                if (d.more) $("#1").find('#more').show(); else $("#1").find('#more').hide();
+            });
+    });
+
+    function more(event) {
+        page++;
+
+        $.post('@Url.Action("ShowTabContent")', event.data.element + '&page=' + page, function (d) {
+            addEnd(d.rows);
+            if (d.more) $("#"+event.data.element).find("#more").show(); else $("#"+event.data.element).find("#more").fadeOut('slow');
+        });
+    }     
+</script>
+@*@Html.Partial("searchbox")*@
+<div id="tabs">
+    <ul>
+        @foreach (var o in Model)
+        {
+            <li><a href="#@o.Id">@o.Name</a></li>
+        }
+    </ul>
+    @foreach (var o in Model)
+    {
+        <div id="@o.Id">
+            <br />
+            <ul id="list">
+            </ul>
+            <br class="cbt" />
+            <a id="more" class="abtn" style="display: none;">@Mui.more</a>
+        </div>
+    }
+</div>
